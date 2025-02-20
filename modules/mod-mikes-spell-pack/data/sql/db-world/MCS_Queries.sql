@@ -1,0 +1,9 @@
+INSERT IGNORE INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (200002, 'spell_paladin_argent_crusader_strike_bonus_dmg');
+INSERT IGNORE INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (200016, 'spell_paladin_charged_consecration');
+INSERT IGNORE INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (200017, 'spell_general_grow_player');
+INSERT IGNORE INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (200018, 'spell_general_shrink_player');
+INSERT IGNORE INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (200019, 'spell_general_player_model_becomes_alexstraza');
+INSERT IGNORE INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (200020, 'spell_general_player_model_becomes_sylvana');
+INSERT IGNORE INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (200021, 'spell_general_player_model_becomes_veeresa');
+INSERT IGNORE INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (200022, 'spell_general_player_model_becomes_blood_elf_male');
+INSERT IGNORE INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (200023, 'spell_general_player_model_becomes_draenei_female');
