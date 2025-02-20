@@ -1,0 +1,19 @@
+[worldserver]
+
+########################################
+#  Character Morphs configuration
+########################################
+#
+#    CharacterMorphs.Enable
+#        Description: Enable/Disable the module
+#        Default:     0 - Disabled
+#                     1 - Enabled
+#
+
+CharacterMorphs.Enable = 1
+CharacterMorphs.BEMaleMorphNames = "Ronen"
+CharacterMorphs.AlexstrazaMorphNames = "Liara,Mizora"
+CharacterMorphs.VeeresaMorphNames = "Mihoyo,Mystra"
+CharacterMorphs.SylvanasMorphNames = "Narya,Sylvanaz"
+CharacterMorphs.DraeneiFemaleMorphNames = "Artoria"
+CharacterMorphs.CharacterNamesToScaleUp = "Gene,Ronen"
