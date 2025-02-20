@@ -19,68 +19,76 @@ public:
         {
      
             std::string playerName = player->GetName();
+            uint32 genericMorphSpellId = sConfigMgr->GetOption<uint32>("CharacterMorphs.GenericMorphSpellId", 0);
 
-            std::vector<std::string> characterNamesToGrowVector = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.CharacterNamesToScaleUp", ""), ",");
-            std::vector<std::string> characterNamesToUseAlexstrazaModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.AlexstrazaMorphNames", ""), ",");
-            std::vector<std::string> characterNamesToUseSylvanasModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.SylvanasMorphNames", ""), ",");
-            std::vector<std::string> characterNamesToUseVeeresaModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.VeeresaMorphNames", ""), ",");
-            std::vector<std::string> characterNamesToUseBEMaleModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.BEMaleMorphNames", ""), ",");
-            std::vector<std::string> characterNamesToUseDraeneiFemaleModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.DraeneiFemaleMorphNames", ""), ",");
+            std::vector<std::string> characterNamesToApplyGenericMorphAuraTo = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.CharactersToApplyGenericMorphAuraTo", ""), ",");
 
-            // add scale aura to characters listed in config
-            for (const std::string& characterName : characterNamesToGrowVector)
+            for (const std::string& characterName : characterNamesToApplyGenericMorphAuraTo)
             {
-                if (characterName == playerName)
-                {
-                    player->AddAura(200017, player);
-                }
+                player->AddAura(genericMorphSpellId,player);
             }
 
-            // add alexstraza model id aura to characters listed in config
-            for (const std::string& characterName : characterNamesToUseAlexstrazaModelId)
-            {
-                if (characterName == playerName)
-                {
-                    player->AddAura(200019, player);
-                }
-            }
+            //std::vector<std::string> characterNamesToGrowVector = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.CharacterNamesToScaleUp", ""), ",");
+            //std::vector<std::string> characterNamesToUseAlexstrazaModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.AlexstrazaMorphNames", ""), ",");
+            //std::vector<std::string> characterNamesToUseSylvanasModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.SylvanasMorphNames", ""), ",");
+            //std::vector<std::string> characterNamesToUseVeeresaModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.VeeresaMorphNames", ""), ",");
+            //std::vector<std::string> characterNamesToUseBEMaleModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.BEMaleMorphNames", ""), ",");
+            //std::vector<std::string> characterNamesToUseDraeneiFemaleModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.DraeneiFemaleMorphNames", ""), ",");
 
-            // add sylvanas model id aura to characters listed in config
-            for (const std::string& characterName : characterNamesToUseSylvanasModelId)
-            {
-                if (characterName == playerName)
-                {
-                    player->AddAura(200020, player);
-                }
-            }
+            //// add scale aura to characters listed in config
+            //for (const std::string& characterName : characterNamesToGrowVector)
+            //{
+            //    if (characterName == playerName)
+            //    {
+            //        player->AddAura(200017, player);
+            //    }
+            //}
 
-            // add veeresa model id aura to characters listed in config
-            for (const std::string& characterName : characterNamesToUseVeeresaModelId)
-            {
-                if (characterName == playerName)
-                {
-                    player->AddAura(200021, player);
-                }
-            }
+            //// add alexstraza model id aura to characters listed in config
+            //for (const std::string& characterName : characterNamesToUseAlexstrazaModelId)
+            //{
+            //    if (characterName == playerName)
+            //    {
+            //        player->AddAura(200019, player);
+            //    }
+            //}
 
-            // add BE Male model id aura to characters listed in config
-            for (const std::string& characterName : characterNamesToUseBEMaleModelId)
-            {
-                if (characterName == playerName)
-                {
-                    player->AddAura(200022, player);
-                    player->AddAura(200046, player);
-                }
-            }
+            //// add sylvanas model id aura to characters listed in config
+            //for (const std::string& characterName : characterNamesToUseSylvanasModelId)
+            //{
+            //    if (characterName == playerName)
+            //    {
+            //        player->AddAura(200020, player);
+            //    }
+            //}
 
-            // add Draenei Female model id aura to characters listed in config
-            for (const std::string& characterName : characterNamesToUseDraeneiFemaleModelId)
-            {
-                if (characterName == playerName)
-                {
-                    player->AddAura(200023, player);
-                }
-            }
+            //// add veeresa model id aura to characters listed in config
+            //for (const std::string& characterName : characterNamesToUseVeeresaModelId)
+            //{
+            //    if (characterName == playerName)
+            //    {
+            //        player->AddAura(200021, player);
+            //    }
+            //}
+
+            //// add BE Male model id aura to characters listed in config
+            //for (const std::string& characterName : characterNamesToUseBEMaleModelId)
+            //{
+            //    if (characterName == playerName)
+            //    {
+            //        player->AddAura(200022, player);
+            //        player->AddAura(200046, player);
+            //    }
+            //}
+
+            //// add Draenei Female model id aura to characters listed in config
+            //for (const std::string& characterName : characterNamesToUseDraeneiFemaleModelId)
+            //{
+            //    if (characterName == playerName)
+            //    {
+            //        player->AddAura(200023, player);
+            //    }
+            //}
         }
     }
 
@@ -90,68 +98,76 @@ public:
         {
 
             std::string playerName = player->GetName();
+            uint32 genericMorphSpellId = sConfigMgr->GetOption<uint32>("CharacterMorphs.GenericMorphSpellId", 0);
 
-            std::vector<std::string> characterNamesToGrowVector = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.CharacterNamesToScaleUp", ""), ",");
-            std::vector<std::string> characterNamesToUseAlexstrazaModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.AlexstrazaMorphNames", ""), ",");
-            std::vector<std::string> characterNamesToUseSylvanasModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.SylvanasMorphNames", ""), ",");
-            std::vector<std::string> characterNamesToUseVeeresaModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.VeeresaMorphNames", ""), ",");
-            std::vector<std::string> characterNamesToUseBEMaleModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.BEMaleMorphNames", ""), ",");
-            std::vector<std::string> characterNamesToUseDraeneiFemaleModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.DraeneiFemaleMorphNames", ""), ",");
+            std::vector<std::string> characterNamesToApplyGenericMorphAuraTo = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.CharactersToApplyGenericMorphAuraTo", ""), ",");
 
-            // add scale aura to characters listed in config
-            for (const std::string& characterName : characterNamesToGrowVector)
+            for (const std::string& characterName : characterNamesToApplyGenericMorphAuraTo)
             {
-                if (characterName == playerName)
-                {
-                    player->AddAura(200017, player);
-                }
+                player->AddAura(genericMorphSpellId, player);
             }
 
-            // add alexstraza model id aura to characters listed in config
-            for (const std::string& characterName : characterNamesToUseAlexstrazaModelId)
-            {
-                if (characterName == playerName)
-                {
-                    player->AddAura(200019, player);
-                }
-            }
+            //std::vector<std::string> characterNamesToGrowVector = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.CharacterNamesToScaleUp", ""), ",");
+            //std::vector<std::string> characterNamesToUseAlexstrazaModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.AlexstrazaMorphNames", ""), ",");
+            //std::vector<std::string> characterNamesToUseSylvanasModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.SylvanasMorphNames", ""), ",");
+            //std::vector<std::string> characterNamesToUseVeeresaModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.VeeresaMorphNames", ""), ",");
+            //std::vector<std::string> characterNamesToUseBEMaleModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.BEMaleMorphNames", ""), ",");
+            //std::vector<std::string> characterNamesToUseDraeneiFemaleModelId = parseNamesStringToVector(sConfigMgr->GetOption<std::string>("CharacterMorphs.DraeneiFemaleMorphNames", ""), ",");
 
-            // add sylvanas model id aura to characters listed in config
-            for (const std::string& characterName : characterNamesToUseSylvanasModelId)
-            {
-                if (characterName == playerName)
-                {
-                    player->AddAura(200020, player);
-                }
-            }
+            //// add scale aura to characters listed in config
+            //for (const std::string& characterName : characterNamesToGrowVector)
+            //{
+            //    if (characterName == playerName)
+            //    {
+            //        player->AddAura(200017, player);
+            //    }
+            //}
 
-            // add veeresa model id aura to characters listed in config
-            for (const std::string& characterName : characterNamesToUseVeeresaModelId)
-            {
-                if (characterName == playerName)
-                {
-                    player->AddAura(200021, player);
-                }
-            }
+            //// add alexstraza model id aura to characters listed in config
+            //for (const std::string& characterName : characterNamesToUseAlexstrazaModelId)
+            //{
+            //    if (characterName == playerName)
+            //    {
+            //        player->AddAura(200019, player);
+            //    }
+            //}
 
-            // add BE Male model id aura to characters listed in config
-            for (const std::string& characterName : characterNamesToUseBEMaleModelId)
-            {
-                if (characterName == playerName)
-                {
-                    player->AddAura(200022, player);
-                    player->AddAura(200046, player);
-                }
-            }
+            //// add sylvanas model id aura to characters listed in config
+            //for (const std::string& characterName : characterNamesToUseSylvanasModelId)
+            //{
+            //    if (characterName == playerName)
+            //    {
+            //        player->AddAura(200020, player);
+            //    }
+            //}
 
-            // add Draenei Female model id aura to characters listed in config
-            for (const std::string& characterName : characterNamesToUseDraeneiFemaleModelId)
-            {
-                if (characterName == playerName)
-                {
-                    player->AddAura(200023, player);
-                }
-            }
+            //// add veeresa model id aura to characters listed in config
+            //for (const std::string& characterName : characterNamesToUseVeeresaModelId)
+            //{
+            //    if (characterName == playerName)
+            //    {
+            //        player->AddAura(200021, player);
+            //    }
+            //}
+
+            //// add BE Male model id aura to characters listed in config
+            //for (const std::string& characterName : characterNamesToUseBEMaleModelId)
+            //{
+            //    if (characterName == playerName)
+            //    {
+            //        player->AddAura(200022, player);
+            //        player->AddAura(200046, player);
+            //    }
+            //}
+
+            //// add Draenei Female model id aura to characters listed in config
+            //for (const std::string& characterName : characterNamesToUseDraeneiFemaleModelId)
+            //{
+            //    if (characterName == playerName)
+            //    {
+            //        player->AddAura(200023, player);
+            //    }
+            //}
         }
     }
 

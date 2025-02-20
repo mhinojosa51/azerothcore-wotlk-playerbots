@@ -17,3 +17,6 @@ CharacterMorphs.VeeresaMorphNames = "Mihoyo,Mystra"
 CharacterMorphs.SylvanasMorphNames = "Narya,Sylvanaz"
 CharacterMorphs.DraeneiFemaleMorphNames = "Artoria"
 CharacterMorphs.CharacterNamesToScaleUp = "Gene,Ronen"
+
+CharacterMorphs.GenericMorphSpellId = 200056;
+CharacterMorphs.CharactersToApplyGenericMorphAuraTo = "Gene,Ronen,Liara,Mizora,Narya,Sylvanaz,Artoria"
