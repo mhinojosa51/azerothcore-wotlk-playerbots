@@ -4,6 +4,8 @@
 #include "SpellAuraEffects.h"
 #include "SpellMgr.h"
 #include "Log.h"
+#include "Config.h"
+#include <algorithm>
 
 enum PallySpells
 {
@@ -174,7 +176,7 @@ public:
 
         void OnRemove(AuraEffect const* aurEff, AuraEffectHandleModes /*mode*/)
         {
-            GetCaster()->SetObjectScale(1.2f);
+            GetCaster()->SetObjectScale(1.25f);
         }
         // Register the function to be called when the spell hits a target
         void Register() override
@@ -213,7 +215,7 @@ public:
 
         void OnRemove(AuraEffect const* aurEff, AuraEffectHandleModes /*mode*/)
         {
-            GetCaster()->SetObjectScale(0.7f);
+            GetCaster()->SetObjectScale(0.68f);
         }
         // Register the function to be called when the spell hits a target
         void Register() override
@@ -237,28 +239,62 @@ void AddSC_spell_general_shrink_player()
     new spell_general_shrink_player();
 }
 
-// set the players displayid to be the same as Alexstraza's
-class spell_general_player_model_becomes_alexstraza : SpellScriptLoader
+// set the players displayid based on the config file
+class spell_general_morph_character_displayid : SpellScriptLoader
 {
 public:
     //constructor to initialize the parent class
-    spell_general_player_model_becomes_alexstraza() : SpellScriptLoader("spell_general_player_model_becomes_alexstraza") {}
+    spell_general_morph_character_displayid() : SpellScriptLoader("spell_general_morph_character_displayid") {}
 
     //nested spell class to handle the actual spell logic
-    class spell_general_player_model_becomes_alexstraza_AuraScript : public AuraScript
+    class spell_general_morph_character_displayid_AuraScript : public AuraScript
     {
         // Prepare the script for customization
-        PrepareAuraScript(spell_general_player_model_becomes_alexstraza_AuraScript);
+        PrepareAuraScript(spell_general_morph_character_displayid_AuraScript);
+
+        std::vector<std::string> parseCSVToVector(const std::string& str, const std::string& delim)
+        {
+            std::vector<std::string> csv;
+            for (std::size_t last_pos = 0; last_pos < str.size(); )
+            {
+                std::size_t pos = str.find(delim, last_pos);
+                if (pos == str.npos) pos = str.size();
+                csv.push_back(str.substr(last_pos, pos - last_pos));
+                last_pos = pos + delim.size();
+            }
+            return csv;
+        }
+
+        std::vector<uint32> parseCSVToUINT32Vector(const std::string& str, const std::string& delim)
+        {
+            std::vector<uint32> csv;
+            for (std::size_t last_pos = 0; last_pos < str.size(); )
+            {
+                std::size_t pos = str.find(delim, last_pos);
+                if (pos == str.npos) pos = str.size();
+                csv.push_back(static_cast<uint32_t>(std::stoul(str.substr(last_pos, pos - last_pos))));
+                last_pos = pos + delim.size();
+            }
+            return csv;
+        }
+
+        std::vector<std::string> characterNamesToApplyMorphsTo = parseCSVToVector(sConfigMgr->GetOption<std::string>("CustomSpells.CharacterNamesToApplyMorphsTo", ""), ",");
+        std::vector<uint32> displayIdsToApplyToCharacters = parseCSVToUINT32Vector(sConfigMgr->GetOption<std::string>("CustomSpells.DisplayIdsToApplyToCharacters", ""), ",");
 
         void OnRemove(AuraEffect const* aurEff, AuraEffectHandleModes /*mode*/)
         {
-            GetCaster()->SetDisplayId(28227);
-            GetCaster()->SetObjectScale(0.68f);
+            std::string characterName = GetCaster()->GetName();
+            auto characterNameIndex = std::find(characterNamesToApplyMorphsTo.begin(), characterNamesToApplyMorphsTo.end(), characterName) - characterNamesToApplyMorphsTo.begin();
+
+            if (characterNameIndex != characterNamesToApplyMorphsTo.size())
+            {
+                GetCaster()->SetDisplayId(displayIdsToApplyToCharacters[characterNameIndex]);
+            }
         }
         // Register the function to be called when the spell hits a target
         void Register() override
         {
-            AfterEffectRemove += AuraEffectRemoveFn(spell_general_player_model_becomes_alexstraza_AuraScript::OnRemove, EFFECT_0, SPELL_AURA_DUMMY, AURA_EFFECT_HANDLE_REAL);
+            AfterEffectRemove += AuraEffectRemoveFn(spell_general_morph_character_displayid_AuraScript::OnRemove, EFFECT_0, SPELL_AURA_DUMMY, AURA_EFFECT_HANDLE_REAL);
         }
     };
 
@@ -266,171 +302,14 @@ public:
 
     AuraScript* GetAuraScript() const override
     {
-        return new spell_general_player_model_becomes_alexstraza_AuraScript();
+        return new spell_general_morph_character_displayid_AuraScript();
     }
 };
 
 // Function to add the custom spell to the Azerothcore systerm
-void AddSC_spell_general_player_model_becomes_alexstraza()
+void AddSC_spell_general_morph_character_displayid()
 {
     //create a new object of the main class to activate the custom spell
-    new spell_general_player_model_becomes_alexstraza();
+    new spell_general_morph_character_displayid();
 }
 
-// set the players displayid to be the same as Sylvanas'
-class spell_general_player_model_becomes_sylvana : SpellScriptLoader
-{
-public:
-    //constructor to initialize the parent class
-    spell_general_player_model_becomes_sylvana() : SpellScriptLoader("spell_general_player_model_becomes_sylvana") {}
-
-    //nested spell class to handle the actual spell logic
-    class spell_general_player_model_becomes_sylvana_AuraScript : public AuraScript
-    {
-        // Prepare the script for customization
-        PrepareAuraScript(spell_general_player_model_becomes_sylvana_AuraScript);
-
-        void OnRemove(AuraEffect const* aurEff, AuraEffectHandleModes /*mode*/)
-        {
-            GetCaster()->SetDisplayId(28213);
-        }
-        // Register the function to be called when the spell hits a target
-        void Register() override
-        {
-            AfterEffectRemove += AuraEffectRemoveFn(spell_general_player_model_becomes_sylvana_AuraScript::OnRemove, EFFECT_0, SPELL_AURA_DUMMY, AURA_EFFECT_HANDLE_REAL);
-        }
-    };
-
-    // Create a new object of the nested class and return it
-
-    AuraScript* GetAuraScript() const override
-    {
-        return new spell_general_player_model_becomes_sylvana_AuraScript();
-    }
-};
-
-// Function to add the custom spell to the Azerothcore systerm
-void AddSC_spell_general_player_model_becomes_sylvana()
-{
-    //create a new object of the main class to activate the custom spell
-    new spell_general_player_model_becomes_sylvana();
-}
-
-// set the players displayid to be the same as Veeresa's
-class spell_general_player_model_becomes_veeresa : SpellScriptLoader
-{
-public:
-    //constructor to initialize the parent class
-    spell_general_player_model_becomes_veeresa() : SpellScriptLoader("spell_general_player_model_becomes_veeresa") {}
-
-    //nested spell class to handle the actual spell logic
-    class spell_general_player_model_becomes_veeresa_AuraScript : public AuraScript
-    {
-        // Prepare the script for customization
-        PrepareAuraScript(spell_general_player_model_becomes_veeresa_AuraScript);
-
-        void OnRemove(AuraEffect const* aurEff, AuraEffectHandleModes /*mode*/)
-        {
-            GetCaster()->SetDisplayId(28222);
-            GetCaster()->SetObjectScale(0.9f);
-        }
-        // Register the function to be called when the spell hits a target
-        void Register() override
-        {
-            AfterEffectRemove += AuraEffectRemoveFn(spell_general_player_model_becomes_veeresa_AuraScript::OnRemove, EFFECT_0, SPELL_AURA_DUMMY, AURA_EFFECT_HANDLE_REAL);
-        }
-    };
-
-    // Create a new object of the nested class and return it
-
-    AuraScript* GetAuraScript() const override
-    {
-        return new spell_general_player_model_becomes_veeresa_AuraScript();
-    }
-};
-
-// Function to add the custom spell to the Azerothcore systerm
-void AddSC_spell_general_player_model_becomes_veeresa()
-{
-    //create a new object of the main class to activate the custom spell
-    new spell_general_player_model_becomes_veeresa();
-}
-
-// set the players displayid to be a Blood Elf Male
-class spell_general_player_model_becomes_blood_elf_male : SpellScriptLoader
-{
-public:
-    //constructor to initialize the parent class
-    spell_general_player_model_becomes_blood_elf_male() : SpellScriptLoader("spell_general_player_model_becomes_blood_elf_male") {}
-
-    //nested spell class to handle the actual spell logic
-    class spell_general_player_model_becomes_blood_elf_male_AuraScript : public AuraScript
-    {
-        // Prepare the script for customization
-        PrepareAuraScript(spell_general_player_model_becomes_blood_elf_male_AuraScript);
-
-        void OnRemove(AuraEffect const* aurEff, AuraEffectHandleModes /*mode*/)
-        {
-            GetCaster()->SetDisplayId(20578);
-            GetCaster()->SetObjectScale(1.2f);
-        }
-        // Register the function to be called when the spell hits a target
-        void Register() override
-        {
-            AfterEffectRemove += AuraEffectRemoveFn(spell_general_player_model_becomes_blood_elf_male_AuraScript::OnRemove, EFFECT_0, SPELL_AURA_DUMMY, AURA_EFFECT_HANDLE_REAL);
-        }
-    };
-
-    // Create a new object of the nested class and return it
-
-    AuraScript* GetAuraScript() const override
-    {
-        return new spell_general_player_model_becomes_blood_elf_male_AuraScript();
-    }
-};
-
-// Function to add the custom spell to the Azerothcore systerm
-void AddSC_spell_general_player_model_becomes_blood_elf_male()
-{
-    //create a new object of the main class to activate the custom spell
-    new spell_general_player_model_becomes_blood_elf_male();
-}
-
-// set the players displayid to be a Draenei Female
-class spell_general_player_model_becomes_draenei_female : SpellScriptLoader
-{
-public:
-    //constructor to initialize the parent class
-    spell_general_player_model_becomes_draenei_female() : SpellScriptLoader("spell_general_player_model_becomes_draenei_female") {}
-
-    //nested spell class to handle the actual spell logic
-    class spell_general_player_model_becomes_draenei_female_AuraScript : public AuraScript
-    {
-        // Prepare the script for customization
-        PrepareAuraScript(spell_general_player_model_becomes_draenei_female_AuraScript);
-
-        void OnRemove(AuraEffect const* aurEff, AuraEffectHandleModes /*mode*/)
-        {
-            GetCaster()->SetDisplayId(20323);
-        }
-        // Register the function to be called when the spell hits a target
-        void Register() override
-        {
-            AfterEffectRemove += AuraEffectRemoveFn(spell_general_player_model_becomes_draenei_female_AuraScript::OnRemove, EFFECT_0, SPELL_AURA_DUMMY, AURA_EFFECT_HANDLE_REAL);
-        }
-    };
-
-    // Create a new object of the nested class and return it
-
-    AuraScript* GetAuraScript() const override
-    {
-        return new spell_general_player_model_becomes_draenei_female_AuraScript();
-    }
-};
-
-// Function to add the custom spell to the Azerothcore systerm
-void AddSC_spell_general_player_model_becomes_draenei_female()
-{
-    //create a new object of the main class to activate the custom spell
-    new spell_general_player_model_becomes_draenei_female();
-}

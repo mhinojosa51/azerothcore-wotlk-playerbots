@@ -11,12 +11,12 @@
 #
 
 CharacterMorphs.Enable = 1
-CharacterMorphs.BEMaleMorphNames = "Ronen"
-CharacterMorphs.AlexstrazaMorphNames = "Liara,Mizora"
-CharacterMorphs.VeeresaMorphNames = "Mihoyo,Mystra"
-CharacterMorphs.SylvanasMorphNames = "Narya,Sylvanaz"
-CharacterMorphs.DraeneiFemaleMorphNames = "Artoria"
-CharacterMorphs.CharacterNamesToScaleUp = "Gene,Ronen"
+CharacterMorphs.GenericMorphSpellId = 200056
+CharacterMorphs.HeroAuraSpellId = 200046
+CharacterMorphs.GrowAuraSpellId = 200017
+CharacterMorphs.ShrinkAuraSpellId = 200018
+CharacterMorphs.CharactersToApplyGenericMorphAuraTo = "Gene,Ronen,Liara,Mizora,Mihoyo,Mystra,Narya,Sylvanaz,Artoria"
+CharacterMorphs.CharacterNamesToApplyHeroAuraTo = "Gene,Ronen"
+CharacterMorphs.CharacterNamesToApplyGrowAuraTo = "Gene,Ronen"
+CharacterMorphs.CharacterNamesToApplyShrinkAuraTo = "Liara,Mizora"
 
-CharacterMorphs.GenericMorphSpellId = 200056;
-CharacterMorphs.CharactersToApplyGenericMorphAuraTo = "Gene,Ronen,Liara,Mizora,Narya,Sylvanaz,Artoria"

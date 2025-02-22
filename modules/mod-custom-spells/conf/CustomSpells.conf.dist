@@ -5,13 +5,15 @@
 [worldserver]
 
 ########################################
-# My module configuration
+# Custom Spells configuration
 ########################################
 #
-#    MyModule.Enable
+#    CustomSpells.Enable
 #        Description: Enable my module and print "Hello World" message at server start
 #        Default:     0 - Disabled
 #                     1 - Enabled
 #
 
-MyModule.Enable = 1
+CustomSpells.Enable = 1
+CustomSpells.CharacterNamesToApplyMorphsTo = "Gene,Ronen,Liara,Mizora,Mihoyo,Mystra,Narya,Sylvanaz,Artoria"
+CustomSpells.DisplayIdsToApplyToCharacters = "20578,20578,28227,28227,28222,28222,28213,28213,20323"
