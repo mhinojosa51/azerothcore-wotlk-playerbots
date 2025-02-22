@@ -7,3 +7,5 @@ INSERT IGNORE INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (20002
 INSERT IGNORE INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (200021, 'spell_general_player_model_becomes_veeresa');
 INSERT IGNORE INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (200022, 'spell_general_player_model_becomes_blood_elf_male');
 INSERT IGNORE INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (200023, 'spell_general_player_model_becomes_draenei_female');
+INSERT IGNORE INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (200056, 'spell_general_morph_character_displayid');
+INSERT IGNORE INTO `spell_script_names` (`spell_id`, `ScriptName`) VALUES (200046, 'spell_general_hero_aura');
