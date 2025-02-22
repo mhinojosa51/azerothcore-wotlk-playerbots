@@ -14,7 +14,10 @@
 /.env*
 /apps/joiner
 /deps/deno
-/data/sql/custom/*
+/data/sql/custom/db_auth/*
+/data/sql/custom/db_characters/*
+/data/sql/custom/db_world/*
+!/data/sql/custom/db_world/mikhin*.sql
 /src/server/scripts/Custom/*
 !/src/server/scripts/Custom/README.md
 
