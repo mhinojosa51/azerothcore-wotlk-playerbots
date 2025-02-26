@@ -1,0 +1,50 @@
+/* Queries to add custom chests to the game that have custom spell tomes and recipes in them */
+
+DELETE FROM `gameobject_template` WHERE `entry`=500107 AND `Data1`=400107
+INSERT INTO `gameobject_template` (`entry`, `type`, `displayId`, `name`, `IconName`, `castBarCaption`, `unk1`, `size`, `Data0`, `Data1`, `Data2`, `Data3`, `Data4`, `Data5`, `Data6`, `Data7`, `Data8`, `Data9`, `Data10`, `Data11`, `Data12`, `Data13`, `Data14`, `Data15`, `Data16`, `Data17`, `Data18`, `Data19`, `Data20`, `Data21`, `Data22`, `Data23`, `AIName`, `ScriptName`, `VerifiedBuild`) VALUES (500107, 3, 259, 'Chest of Forgotten Spells', '', '', '', 1, 57, 400107, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', '', 12340);
+DELETE FROM `gameobject_loot_template` WHERE `Entry`=400107 AND `Item`=80024
+INSERT INTO `gameobject_loot_template` (`Entry`, `Item`, `Reference`, `Chance`, `QuestRequired`, `LootMode`, `GroupId`, `MinCount`, `MaxCount`, `Comment`) VALUES (400107, 80024, 0, 100, 0, 1, 0, 1, 1, NULL);
+DELETE FROM `gameobject` WHERE `guid`=10000007 AND `id`=500107
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `zoneId`, `areaId`, `spawnMask`, `phaseMask`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `ScriptName`, `VerifiedBuild`, `Comment`) VALUES (10000007, 500107, 90, 721, 721, 1, 1, -455.7102, 668.5729, -325.31897, 3.1279151, 0, 0, 0.9999766156571133, 0.00683872348804632, 600, 100, 1, '', 0, NULL);
+
+DELETE FROM `gameobject_template` WHERE `entry`=500108 AND `Data1`=400108
+INSERT INTO `gameobject_template` (`entry`, `type`, `displayId`, `name`, `IconName`, `castBarCaption`, `unk1`, `size`, `Data0`, `Data1`, `Data2`, `Data3`, `Data4`, `Data5`, `Data6`, `Data7`, `Data8`, `Data9`, `Data10`, `Data11`, `Data12`, `Data13`, `Data14`, `Data15`, `Data16`, `Data17`, `Data18`, `Data19`, `Data20`, `Data21`, `Data22`, `Data23`, `AIName`, `ScriptName`, `VerifiedBuild`) VALUES (500108, 3, 259, 'Chest of Forgotten Spells', '', '', '', 1, 57, 400108, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', '', 12340);
+DELETE FROM `gameobject_loot_template` WHERE `Entry`=400108 AND `Item`=80029
+INSERT INTO `gameobject_loot_template` (`Entry`, `Item`, `Reference`, `Chance`, `QuestRequired`, `LootMode`, `GroupId`, `MinCount`, `MaxCount`, `Comment`) VALUES (400108, 80029, 0, 100, 0, 1, 0, 1, 1, NULL);
+DELETE FROM `gameobject` WHERE `guid`=10000008 AND `id`=500108
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `zoneId`, `areaId`, `spawnMask`, `phaseMask`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `ScriptName`, `VerifiedBuild`, `Comment`) VALUES (10000008, 500108, 47, 491, 491, 1, 1, 2215.123, 1891.8052, 70.914986, 2.7152424, 0, 0, 0.9773640992515715, 0.21156421600583625, 600, 100, 1, '', 0, NULL);
+
+DELETE FROM `gameobject_template` WHERE `entry`=500109 AND `Data1`=400109
+INSERT INTO `gameobject_template` (`entry`, `type`, `displayId`, `name`, `IconName`, `castBarCaption`, `unk1`, `size`, `Data0`, `Data1`, `Data2`, `Data3`, `Data4`, `Data5`, `Data6`, `Data7`, `Data8`, `Data9`, `Data10`, `Data11`, `Data12`, `Data13`, `Data14`, `Data15`, `Data16`, `Data17`, `Data18`, `Data19`, `Data20`, `Data21`, `Data22`, `Data23`, `AIName`, `ScriptName`, `VerifiedBuild`) VALUES (500109, 3, 259, 'Chest of Forgotten Spells', '', '', '', 1, 57, 400109, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', '', 12340);
+DELETE FROM `gameobject_loot_template` WHERE `Entry`=400109 AND `Item`=80034
+INSERT INTO `gameobject_loot_template` (`Entry`, `Item`, `Reference`, `Chance`, `QuestRequired`, `LootMode`, `GroupId`, `MinCount`, `MaxCount`, `Comment`) VALUES (400109, 80034, 0, 100, 0, 1, 0, 1, 1, NULL);
+DELETE FROM `gameobject` WHERE `guid`=10000009 AND `id`=500109
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `zoneId`, `areaId`, `spawnMask`, `phaseMask`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `ScriptName`, `VerifiedBuild`, `Comment`) VALUES (10000009, 500109, 90, 721, 721, 1, 1, -775.8349, 331.29425, -272.5981, 0.52512956, 0, 0, 0.2595582813130195, 0.9657274452980155, 600, 100, 1, '', 0, NULL);
+
+DELETE FROM `gameobject_template` WHERE `entry`=500110 AND `Data1`=400110
+INSERT INTO `gameobject_template` (`entry`, `type`, `displayId`, `name`, `IconName`, `castBarCaption`, `unk1`, `size`, `Data0`, `Data1`, `Data2`, `Data3`, `Data4`, `Data5`, `Data6`, `Data7`, `Data8`, `Data9`, `Data10`, `Data11`, `Data12`, `Data13`, `Data14`, `Data15`, `Data16`, `Data17`, `Data18`, `Data19`, `Data20`, `Data21`, `Data22`, `Data23`, `AIName`, `ScriptName`, `VerifiedBuild`) VALUES (500110, 3, 259, 'Chest of Forgotten Spells', '', '', '', 1, 57, 400110, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', '', 12340);
+DELETE FROM `gameobject_loot_template` WHERE `Entry`=400110 AND `Item`=80021
+INSERT INTO `gameobject_loot_template` (`Entry`, `Item`, `Reference`, `Chance`, `QuestRequired`, `LootMode`, `GroupId`, `MinCount`, `MaxCount`, `Comment`) VALUES (400110, 80021, 0, 100, 0, 1, 0, 1, 1, NULL);
+DELETE FROM `gameobject` WHERE `guid`=10000010 AND `id`=500110
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `zoneId`, `areaId`, `spawnMask`, `phaseMask`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `ScriptName`, `VerifiedBuild`, `Comment`) VALUES (10000010, 500110, 189, 796, 796, 1, 1, 1951.5541, -431.4219, 6.177518, 0.037726127, 0, 0, 0.018861944892560358, 0.9998220976928196, 600, 100, 1, '', 0, NULL);
+
+DELETE FROM `gameobject_template` WHERE `entry`=500111 AND `Data1`=400111
+INSERT INTO `gameobject_template` (`entry`, `type`, `displayId`, `name`, `IconName`, `castBarCaption`, `unk1`, `size`, `Data0`, `Data1`, `Data2`, `Data3`, `Data4`, `Data5`, `Data6`, `Data7`, `Data8`, `Data9`, `Data10`, `Data11`, `Data12`, `Data13`, `Data14`, `Data15`, `Data16`, `Data17`, `Data18`, `Data19`, `Data20`, `Data21`, `Data22`, `Data23`, `AIName`, `ScriptName`, `VerifiedBuild`) VALUES (500111, 3, 259, 'Chest of Forgotten Spells', '', '', '', 1, 57, 400111, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', '', 12340);
+DELETE FROM `gameobject_loot_template` WHERE `Entry`=400111 AND `Item`=80035
+INSERT INTO `gameobject_loot_template` (`Entry`, `Item`, `Reference`, `Chance`, `QuestRequired`, `LootMode`, `GroupId`, `MinCount`, `MaxCount`, `Comment`) VALUES (400111, 80035, 0, 100, 0, 1, 0, 1, 1, NULL);
+DELETE FROM `gameobject` WHERE `guid`=10000011 AND `id`=500111
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `zoneId`, `areaId`, `spawnMask`, `phaseMask`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `ScriptName`, `VerifiedBuild`, `Comment`) VALUES (10000011, 500111, 189, 796, 796, 1, 1, 136.39278, -416.68475, 18.521719, 5.5129623, 0, 0, 0.3756624757648721, -0.9267565507198786, 600, 100, 1, '', 0, NULL);
+
+DELETE FROM `gameobject_template` WHERE `entry`=500112 AND `Data1`=400112
+INSERT INTO `gameobject_template` (`entry`, `type`, `displayId`, `name`, `IconName`, `castBarCaption`, `unk1`, `size`, `Data0`, `Data1`, `Data2`, `Data3`, `Data4`, `Data5`, `Data6`, `Data7`, `Data8`, `Data9`, `Data10`, `Data11`, `Data12`, `Data13`, `Data14`, `Data15`, `Data16`, `Data17`, `Data18`, `Data19`, `Data20`, `Data21`, `Data22`, `Data23`, `AIName`, `ScriptName`, `VerifiedBuild`) VALUES (500112, 3, 259, 'Chest of Forgotten Spells', '', '', '', 1, 57, 400112, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', '', 12340);
+DELETE FROM `gameobject_loot_template` WHERE `Entry`=400112 AND `Item`=80025
+INSERT INTO `gameobject_loot_template` (`Entry`, `Item`, `Reference`, `Chance`, `QuestRequired`, `LootMode`, `GroupId`, `MinCount`, `MaxCount`, `Comment`) VALUES (400112, 80025, 0, 100, 0, 1, 0, 1, 1, NULL);
+DELETE FROM `gameobject` WHERE `guid`=10000012 AND `id`=500112
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `zoneId`, `areaId`, `spawnMask`, `phaseMask`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `ScriptName`, `VerifiedBuild`, `Comment`) VALUES (10000012, 500112, 189, 796, 796, 1, 1, 1213.8457, 1403.7255, 29.009848, 3.6373029, 0, 0, 0.9694408435767079, -0.24532519398806332, 600, 100, 1, '', 0, NULL);
+
+DELETE FROM `gameobject_template` WHERE `entry`=500113 AND `Data1`=400113
+INSERT INTO `gameobject_template` (`entry`, `type`, `displayId`, `name`, `IconName`, `castBarCaption`, `unk1`, `size`, `Data0`, `Data1`, `Data2`, `Data3`, `Data4`, `Data5`, `Data6`, `Data7`, `Data8`, `Data9`, `Data10`, `Data11`, `Data12`, `Data13`, `Data14`, `Data15`, `Data16`, `Data17`, `Data18`, `Data19`, `Data20`, `Data21`, `Data22`, `Data23`, `AIName`, `ScriptName`, `VerifiedBuild`) VALUES (500113, 3, 259, 'Chest of Forgotten Spells', '', '', '', 1, 57, 400113, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, '', '', 12340);
+DELETE FROM `gameobject_loot_template` WHERE `Entry`=400113 AND `Item`=80030
+INSERT INTO `gameobject_loot_template` (`Entry`, `Item`, `Reference`, `Chance`, `QuestRequired`, `LootMode`, `GroupId`, `MinCount`, `MaxCount`, `Comment`) VALUES (400113, 80030, 0, 100, 0, 1, 0, 1, 1, NULL);
+DELETE FROM `gameobject` WHERE `guid`=10000013 AND `id`=500113
+INSERT INTO `gameobject` (`guid`, `id`, `map`, `zoneId`, `areaId`, `spawnMask`, `phaseMask`, `position_x`, `position_y`, `position_z`, `orientation`, `rotation0`, `rotation1`, `rotation2`, `rotation3`, `spawntimesecs`, `animprogress`, `state`, `ScriptName`, `VerifiedBuild`, `Comment`) VALUES (10000013, 500113, 129, 722, 722, 1, 1, 2414.64, 957.0061, 54.717094, 1.8414905, 0, 0, 0.796052886528722, 0.6052270663555039, 600, 100, 1, '', 0, NULL);
