@@ -13,7 +13,7 @@ class PlayerBotMorphs : public PlayerScript
 public:
     PlayerBotMorphs() : PlayerScript("PlayerBotMorphs") { }
 
-    void OnMapChanged(Player* player) override
+    void OnPlayerMapChanged(Player* player) override
     {
         if (sConfigMgr->GetOption<bool>("CharacterMorphs.Enable", false))
         {
