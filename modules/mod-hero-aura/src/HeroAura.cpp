@@ -8,18 +8,29 @@
 #include "Log.h"
 
 // Add player script
-class boss_treasure_chests : PlayerScript
+class hero_aura : PlayerScript
 {
     public:
-        boss_treasure_chests() : PlayerScript("boss_treasure_chests") { }
-
-        void OnCreatureKill(Player* player, Creature* boss) override
+        hero_aura() : PlayerScript("hero_aura")
         {
-            
-        }    
+            killCount = 0;
+        }
+
+        void OnPlayerCreatureKill(Player* player, Creature* creature) override
+        {
+            if (player->HasAura(heroAuraSpellId))
+            {
+                killCount++;
+                LOG_INFO("module", "Hero has killed [{}] creatures!", killCount);
+            }
+        }
+
+    private:
+        uint32 killCount;
+        uint32 heroAuraSpellId = 200046;
 };
 
-void AddBossTreasureChestScripts()
+void AddHeroAuraScripts()
 {
-    new boss_treasure_chests();
+    new hero_aura();
 }

@@ -13,7 +13,7 @@ class boss_treasure_chests : PlayerScript
     public:
         boss_treasure_chests() : PlayerScript("boss_treasure_chests") { }
 
-        void OnCreatureKill(Player* player, Creature* boss) override
+        void OnPlayerCreatureKill(Player* player, Creature* boss) override
         {
             if (ShouldSkipDungeonOrRaidMap(boss->GetMapId()))
             {
