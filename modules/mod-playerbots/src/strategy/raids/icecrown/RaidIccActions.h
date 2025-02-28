@@ -16,6 +16,7 @@
 
 const Position ICC_LM_TANK_POSITION = Position(-391.0f, 2259.0f, 42.0f);
 const Position ICC_DARK_RECKONING_SAFE_POSITION = Position(-523.33386f, 2211.2031f, 62.823116f);
+const Position ICC_LDW_TANK_POSTION = Position(-589.9879f, 2211.2456f, 49.476616f);
 const Position ICC_ROTTING_FROST_GIANT_TANK_POSITION = Position(-265.90125f, 2209.0605f, 199.97006f);
 const Position ICC_GUNSHIP_TELEPORT_ALLY = Position (-370.04645f, 1993.3536f, 466.65656f);
 const Position ICC_GUNSHIP_TELEPORT_ALLY2 = Position (-392.66208f, 2064.893f, 466.5672f, 5.058196f);
@@ -38,6 +39,7 @@ const Position ICC_BPC_OT_POSITION = Position(4649.2236f, 2796.0972f, 361.1815f)
 const Position ICC_BPC_MT_POSITION = Position(4648.5674f, 2744.847f, 361.18222f);
 const Position ICC_BQL_CENTER_POSITION = Position(4595.0f, 2769.0f, 400.0f);
 const Position ICC_BQL_TANK_POSITION = Position(4616.102f, 2768.9167f, 400.13797f);
+const Position ICC_VDW_GROUP_POSITION = Position(4204.839f, 2484.9338f, 364.87f);
 const Position ICC_SINDRAGOSA_TANK_POSITION = Position(4408.016f, 2508.0647f, 203.37955f);
 const Position ICC_SINDRAGOSA_RANGED_POSITION = Position(4373.7686f, 2498.0042f, 203.38176f);
 const Position ICC_SINDRAGOSA_MELEE_POSITION = Position(4389.22f, 2499.5237f, 203.38033f);
@@ -270,12 +272,19 @@ public:
     bool Execute(Event event) override;
 };
 
-//BPC Vortex
 class IccBpcEmpoweredVortexAction : public MovementAction
 {
 public:
     IccBpcEmpoweredVortexAction(PlayerbotAI* botAI) 
         : MovementAction(botAI, "icc bpc empowered vortex") {}
+    bool Execute(Event event) override;
+};
+
+class IccBpcKineticBombAction : public AttackAction
+{
+public:
+    IccBpcKineticBombAction(PlayerbotAI* botAI) 
+        : AttackAction(botAI, "icc bpc kinetic bomb") {}
     bool Execute(Event event) override;
 };
 
