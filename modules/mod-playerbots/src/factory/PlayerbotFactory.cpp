@@ -33,6 +33,7 @@
 #include "Playerbots.h"
 #include "RandomItemMgr.h"
 #include "RandomPlayerbotFactory.h"
+#include "ReputationMgr.h"
 #include "SharedDefines.h"
 #include "SpellAuraDefines.h"
 #include "StatsWeightCalculator.h"
@@ -49,6 +50,7 @@ std::list<uint32> PlayerbotFactory::classQuestIds;
 std::list<uint32> PlayerbotFactory::specialQuestIds;
 std::vector<uint32> PlayerbotFactory::enchantSpellIdCache;
 std::vector<uint32> PlayerbotFactory::enchantGemIdCache;
+std::unordered_map<uint32, std::vector<uint32>> PlayerbotFactory::trainerIdCache;
 
 PlayerbotFactory::PlayerbotFactory(Player* bot, uint32 level, uint32 itemQuality, uint32 gearScoreLimit)
     : level(level), itemQuality(itemQuality), gearScoreLimit(gearScoreLimit), bot(bot)
@@ -110,11 +112,14 @@ void PlayerbotFactory::Init()
     uint32 maxStoreSize = sSpellMgr->GetSpellInfoStoreSize();
     for (uint32 id = 1; id < maxStoreSize; ++id)
     {
-        SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(id);
-        if (!spellInfo)
+        if (id == 47181 || id == 50358 || id == 47242 || id == 52639 || id == 47147 || id == 7218)  // Test Enchant
             continue;
 
-        if (id == 47181 || id == 50358 || id == 47242 || id == 52639 || id == 47147 || id == 7218)  // Test Enchant
+        if (id == 15463) // Legendary Arcane Amalgamation
+            continue;
+
+        SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(id);
+        if (!spellInfo)
             continue;
 
         uint32 requiredLevel = spellInfo->BaseLevel;
@@ -247,6 +252,14 @@ void PlayerbotFactory::Randomize(bool incremental)
     {
         pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Quests");
         InitInstanceQuests();
+        InitAttunementQuests();
+        if (pmo)
+            pmo->finish();
+    }
+    else
+    {
+        pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Quests");
+        InitAttunementQuests();
         if (pmo)
             pmo->finish();
     }
@@ -289,6 +302,12 @@ void PlayerbotFactory::Randomize(bool incremental)
     pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Spells2");
     LOG_DEBUG("playerbots", "Initializing spells (step 2)...");
     InitAvailableSpells();
+    if (pmo)
+        pmo->finish();
+
+    pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Reputation");
+    LOG_DEBUG("playerbots", "Initializing reputation...");
+    InitReputation();
     if (pmo)
         pmo->finish();
 
@@ -356,6 +375,12 @@ void PlayerbotFactory::Randomize(bool incremental)
     if (pmo)
         pmo->finish();
 
+    pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Keys");
+    LOG_DEBUG("playerbots", "Initializing keys...");
+    InitKeyring();
+    if (pmo)
+        pmo->finish();
+
     pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_EqSets");
     LOG_DEBUG("playerbots", "Initializing second equipment set...");
     // InitSecondEquipmentSet();
@@ -391,9 +416,12 @@ void PlayerbotFactory::Randomize(bool incremental)
     // bot->SaveToDB(false, false);
 
     // pmo = sPerformanceMonitor->start(PERF_MON_RNDBOT, "PlayerbotFactory_Guilds");
-    // LOG_INFO("playerbots", "Initializing guilds...");
     // bot->SaveToDB(false, false);
-    // InitGuild();
+    if (sPlayerbotAIConfig->randomBotGuildCount > 0)
+    {
+        LOG_DEBUG("playerbots", "Initializing guilds...");
+        InitGuild();
+    }
     // bot->SaveToDB(false, false);
     // if (pmo)
     //    pmo->finish();
@@ -442,6 +470,7 @@ void PlayerbotFactory::Refresh()
     // {
     //     InitEquipment(true);
     // }
+    InitAttunementQuests();
     ClearInventory();
     InitAmmo();
     InitFood();
@@ -456,7 +485,9 @@ void PlayerbotFactory::Refresh()
     InitClassSpells();
     InitAvailableSpells();
     InitSkills();
+    InitReputation();
     InitMounts();
+    InitKeyring();
     if (bot->GetLevel() >= sPlayerbotAIConfig->minEnchantingBotLevel)
     {
         ApplyEnchantAndGemsNew();
@@ -1020,13 +1051,13 @@ void PlayerbotFactory::InitTalentsTree(bool increment /*false*/, bool use_templa
     {
         InitTalentsByTemplate(specTab);
     }
-    // always use template now
-    // else
-    // {
-    //     InitTalents(specTab);
-    //     if (bot->GetFreeTalentPoints())
-    //         InitTalents((specTab + 1) % 3);
-    // }
+    // if LimitTalentsExpansion = 1 there may be unused talent points
+    if (bot->GetFreeTalentPoints())
+        InitTalents((specTab + 1) % 3);
+
+    if (bot->GetFreeTalentPoints())
+        InitTalents((specTab + 2) % 3);
+    
     bot->SendTalentsInfoData(false);
 }
 
@@ -2327,7 +2358,7 @@ void PlayerbotFactory::SetRandomSkill(uint16 id)
 
 void PlayerbotFactory::InitAvailableSpells()
 {
-    if (trainerIdCache.empty())
+    if (trainerIdCache[bot->getClass()].empty())
     {
         CreatureTemplateContainer const* creatureTemplateContainer = sObjectMgr->GetCreatureTemplates();
         for (CreatureTemplateContainer::const_iterator i = creatureTemplateContainer->begin();
@@ -2341,10 +2372,10 @@ void PlayerbotFactory::InitAvailableSpells()
                 continue;
 
             uint32 trainerId = co.Entry;
-            trainerIdCache.push_back(trainerId);
+            trainerIdCache[bot->getClass()].push_back(trainerId);
         }
     }
-    for (uint32 trainerId : trainerIdCache)
+    for (uint32 trainerId : trainerIdCache[bot->getClass()])
     {
         TrainerSpellData const* trainer_spells = sObjectMgr->GetNpcTrainerSpells(trainerId);
         if (!trainer_spells)
@@ -2619,6 +2650,12 @@ void PlayerbotFactory::InitTalentsByTemplate(uint32 specTab)
         for (std::vector<uint32>& p : sPlayerbotAIConfig->parsedSpecLinkOrder[cls][specIndex][level])
         {
             uint32 tab = p[0], row = p[1], col = p[2], lvl = p[3];
+            if (sPlayerbotAIConfig->limitTalentsExpansion && bot->GetLevel() <= 60 && (row > 6 || (row == 6 && col != 1)))
+                continue;
+
+            if (sPlayerbotAIConfig->limitTalentsExpansion && bot->GetLevel() <= 70 && (row > 8 || (row == 8 && col != 1)))
+                continue;
+
             uint32 talentID = 0;
             uint32 learnLevel = 0;
             std::vector<TalentEntry const*>& spells = spells_row[row];
@@ -3221,6 +3258,12 @@ void PlayerbotFactory::InitGlyphs(bool increment)
                 bot->SetGlyph(slotIndex, 0, true);
             }
         }
+    }
+
+    if (sPlayerbotAIConfig->limitTalentsExpansion && bot->GetLevel() <= 70)
+    {
+        bot->SendTalentsInfoData(false);
+        return;
     }
 
     uint32 level = bot->GetLevel();
@@ -4204,3 +4247,157 @@ void PlayerbotFactory::IterateItemsInBank(IterateItemsVisitor* visitor)
         }
     }
 }
+
+void PlayerbotFactory::InitKeyring()
+{
+    if (!bot)
+        return;
+
+    ReputationMgr& repMgr = bot->GetReputationMgr(); // Reference, use . instead of ->
+    
+    std::vector<std::pair<uint32, uint32>> keysToCheck;
+
+    // Reputation-based Keys (Honored requirement)
+    if (repMgr.GetRank(sFactionStore.LookupEntry(1011)) >= REP_HONORED && !bot->HasItemCount(30633, 1))
+        keysToCheck.emplace_back(1011, 30633); // Lower City - Auchenai Key
+    if (repMgr.GetRank(sFactionStore.LookupEntry(942)) >= REP_HONORED && !bot->HasItemCount(30623, 1))
+        keysToCheck.emplace_back(942, 30623); // Cenarion Expedition - Reservoir Key
+    if (repMgr.GetRank(sFactionStore.LookupEntry(989)) >= REP_HONORED && !bot->HasItemCount(30635, 1))
+        keysToCheck.emplace_back(989, 30635); // Keepers of Time - Key of Time
+    if (repMgr.GetRank(sFactionStore.LookupEntry(935)) >= REP_HONORED && !bot->HasItemCount(30634, 1))
+        keysToCheck.emplace_back(935, 30634); // The Sha'tar - Warpforged Key
+
+    // Faction-specific Keys (Honored requirement)
+    if (bot->GetTeamId() == TEAM_ALLIANCE && repMgr.GetRank(sFactionStore.LookupEntry(946)) >= REP_HONORED && !bot->HasItemCount(30622, 1))
+        keysToCheck.emplace_back(946, 30622); // Honor Hold - Flamewrought Key (Alliance)
+    if (bot->GetTeamId() == TEAM_HORDE && repMgr.GetRank(sFactionStore.LookupEntry(947)) >= REP_HONORED && !bot->HasItemCount(30637, 1))
+        keysToCheck.emplace_back(947, 30637); // Thrallmar - Flamewrought Key (Horde)
+
+    // Keys that do not require Rep or Faction
+    // Shattered Halls Key, Shadow Labyrinth Key, Key to the Arcatraz, Master's Key
+    std::vector<uint32> nonRepKeys = {28395, 27991, 31084, 24490};
+    for (uint32 keyId : nonRepKeys)
+    {
+        if (!bot->HasItemCount(keyId, 1))
+            keysToCheck.emplace_back(0, keyId);
+    }
+
+    // Assign keys
+    for (auto const& keyPair : keysToCheck)
+    {
+        uint32 keyId = keyPair.second;
+        if (keyId > 0)
+        {
+            if (Item* newItem = StoreNewItemInInventorySlot(bot,keyId, 1))
+            {
+                newItem->AddToUpdateQueueOf(bot);
+            }
+        }
+    }
+}
+void PlayerbotFactory::InitReputation()
+{
+    if (!bot)
+        return;
+
+    if (bot->GetLevel() < 70)
+        return; // Only apply for level 70+ bots
+
+    ReputationMgr& repMgr = bot->GetReputationMgr();
+
+    // List of factions that require Honored reputation for heroic keys
+    std::vector<uint32> factions = {
+        1011, // Lower City
+        942,  // Cenarion Expedition
+        989,  // Keepers of Time
+        935   // The Sha'tar
+    };
+
+    // Add faction-specific reputation
+    if (bot->GetTeamId() == TEAM_ALLIANCE)
+        factions.push_back(946); // Honor Hold (Alliance)
+    else if (bot->GetTeamId() == TEAM_HORDE)
+        factions.push_back(947); // Thrallmar (Horde)
+
+    // Set reputation to Honored for each required faction
+    for (uint32 factionId : factions)
+    {
+        FactionEntry const* factionEntry = sFactionStore.LookupEntry(factionId);
+        if (!factionEntry)
+            continue;
+
+        // Bottom of Honored rank
+        int32 honoredRep = ReputationMgr::ReputationRankToStanding(static_cast<ReputationRank>(REP_HONORED - 1)) + 1;
+
+        // Get bot's current reputation with this faction
+        int32 currentRep = repMgr.GetReputation(factionEntry);
+
+        // Only set reputation if it's lower than the required Honored value
+        if (currentRep < honoredRep)
+        {
+            repMgr.SetReputation(factionEntry, honoredRep);
+        }
+    }
+}
+
+void PlayerbotFactory::InitAttunementQuests()
+{
+    uint32 level = bot->GetLevel();
+    if (level < 55)
+        return; // Only apply for level 55+ bots
+
+    uint32 currentXP = bot->GetUInt32Value(PLAYER_XP);
+
+    // List of attunement quest IDs
+    std::list<uint32> attunementQuestsTBC = {
+        // Caverns of Time - Part 1
+        10279, // To The Master's Lair
+        10277, // The Caverns of Time
+
+        // Caverns of Time - Part 2 (Escape from Durnholde Keep)
+        10282, // Old Hillsbrad
+        10283, // Taretha's Diversion
+        10284, // Escape from Durnholde
+        10285, // Return to Andormu
+
+        // Caverns of Time - Part 2 (The Black Morass)
+        10296, // The Black Morass
+        10297, // The Opening of the Dark Portal
+        10298, // Hero of the Brood
+
+        // Magister's Terrace Attunement
+        11481, // Crisis at the Sunwell
+        11482, // Duty Calls
+        11488, // Magisters' Terrace
+        11490, // The Scryer's Scryer
+        11492  // Hard to Kill
+    };
+
+    // Complete all level-appropriate attunement quests for the bot
+    if (level >= 60)
+    {
+        std::list<uint32> questsToComplete;
+
+        // Check each quest status before adding to the completion list
+        for (uint32 questId : attunementQuestsTBC)
+        {
+            QuestStatus questStatus = bot->GetQuestStatus(questId);
+
+            if (questStatus == QUEST_STATUS_NONE) // Quest not yet taken/completed
+            {
+                questsToComplete.push_back(questId);
+            }
+        }
+
+        // Only complete quests that haven't been finished yet
+        if (!questsToComplete.empty())
+        {
+            InitQuests(questsToComplete);
+        }
+    }
+
+    // Reset XP so bot's level remains unchanged
+    bot->GiveLevel(level);
+    bot->SetUInt32Value(PLAYER_XP, currentXP);
+}
+
